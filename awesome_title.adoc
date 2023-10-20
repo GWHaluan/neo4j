@@ -12,3 +12,16 @@ LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/mai
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row MATCH (e:Storynode {id: row.from})
 MATCH (c:Storynode {id: row.to}) MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
 ----
+
+
+[source]
+----
+MATCH ()-[r:CONNECTS_TO]->()
+DELETE r
+----
+
+[source]
+----
+MATCH (n:Storynode})
+DELETE n
+----
