@@ -1,6 +1,6 @@
 Neo4j project
 -------------
 
-include::sources.adoc
+include::sources.adoc[]
 
 link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[praise]
