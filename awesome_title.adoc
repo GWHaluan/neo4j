@@ -1,6 +1,14 @@
 Awesome Neo4j project
 ---------------------
 
-Some filler text.
+[source]
+----
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row MERGE (c:Storynode {id: row.incoming, text: row.text});
+----
 
 
+[source]
+----
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row MATCH (e:Storynode {id: row.from})
+MATCH (c:Storynode {id: row.to}) MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
+----
