@@ -1,27 +1,6 @@
-Awesome Neo4j project
----------------------
+Neo4j project
+-------------
 
-[source]
-----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row MERGE (c:Storynode {id: row.incoming, text: row.text});
-----
+include::sources.adoc
 
-
-[source]
-----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row MATCH (e:Storynode {id: row.from})
-MATCH (c:Storynode {id: row.to}) MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
-----
-
-
-[source]
-----
-MATCH ()-[r:CONNECTS_TO]->()
-DELETE r
-----
-
-[source]
-----
-MATCH (n:Storynode)
-DELETE n
-----
+link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[praise]
