@@ -1,6 +1,42 @@
-Neo4j project
--------------
+A text-based adventure in Neo4j
+-------------------------------
 
-include::sources.adoc[]
+About the project
+~~~~~~~~~~~~~~~~~
 
 link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[praise]
+
+link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[get it here]
+
+Download +The Terror Aboard The Speedwell 1.2.zip+.
+Luckily, the file +The Terror Aboard The Speedwell 1.2.html+ contains a list of +div+-elements with all text snippets for the story.
+
+I used Python to parse the HTML and to convert the data to CSV.
+Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
+
+See the link:divparser.py[Python script] for reference.
+
+[source]
+----
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row MERGE (c:Storynode {id: row.incoming, text: row.text});
+----
+
+
+[source]
+----
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row MATCH (e:Storynode {id: row.from})
+MATCH (c:Storynode {id: row.to}) MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
+----
+
+
+[source]
+----
+MATCH ()-[r:CONNECTS_TO]->()
+DELETE r
+----
+
+[source]
+----
+MATCH (n:Storynode)
+DELETE n
+----
