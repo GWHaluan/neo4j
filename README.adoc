@@ -4,6 +4,10 @@ A text-based adventure in Neo4j
 About the project
 ~~~~~~~~~~~~~~~~~
 
+inspiration from link:https://neo4j.com/blog/vampire-express-graph-database-choose-your-own-adventure/[Vampire Express: Graphing a Classic ’80s Choose Your Own Adventure Story] by Joe Depeau
+
+some interesting aspects about graph representations of such text-based adventures in link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books]
+
 link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[praise]
 
 link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[get it here]
