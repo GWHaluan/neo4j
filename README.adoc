@@ -12,6 +12,12 @@ link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the
 
 link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[get it here]
 
+Preparing the data model
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Getting hold of usable source data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Download +The Terror Aboard The Speedwell 1.2.zip+.
 Luckily, the file +The Terror Aboard The Speedwell 1.2.html+ contains a list of +div+-elements with all text snippets for the story.
 
@@ -19,6 +25,9 @@ I used Python to parse the HTML and to convert the data to CSV.
 Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
 
 See the link:divparser.py[Python script] for reference.
+
+Populating the Neo4j graph
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [source]
 ----
@@ -44,3 +53,26 @@ DELETE r
 MATCH (n:Storynode)
 DELETE n
 ----
+
+Defining special nodes
+^^^^^^^^^^^^^^^^^^^^^^
+
+Sample text.
+
+Querying the adventure graph
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Q: Are there any circles in the story?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Courtesy of Joe Depeau.
+
+Q: Are there unreachable story steps?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sample text.
+
+Q: Which paths finish the story? Survival or fatality?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sample text.
