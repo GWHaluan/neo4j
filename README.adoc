@@ -82,7 +82,7 @@ Note that occurrences of `\n` have been replaced with a carriage return in the l
 I wrote a link:divparser.py[Python script] to parse the +div+-elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
 I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
 
-.*nodes.csv*:
+._nodes.csv_:
 [source,csv]
 ----
 incoming,text
@@ -93,7 +93,9 @@ incoming,text
 ...
 ----
 
-.*edges.csv*:
+I treat the *incoming* column as the node's ID. The only other column is *text* to store the actual story snippet with the node.
+
+._edges.csv_:
 [source,csv]
 ----
 from,to
@@ -102,26 +104,32 @@ from,to
 ...
 ----
 
-Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
-
-See the link:divparser.py[Python script] for reference.
+Every edge is represented by the tuple made up of the IDs of the source and target nodes.
 
 Populating the Neo4j graph
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+First, I loaded up the two files _nodes.csv_ and _edges.csv_ this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to Neo4j via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
+
+.Cypher query for _nodes.csv_:
 [source]
 ----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row MERGE (c:Storynode {id: row.incoming, text: row.text});
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row
+MERGE (c:Storynode {id: row.incoming, text: row.text});
 ----
 
+Note that I call values from the *incoming* column `id`s in the Neo4j data model.
 
+.Cypher query for _edges.csv_:
 [source]
 ----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row MATCH (e:Storynode {id: row.from})
-MATCH (c:Storynode {id: row.to}) MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row
+MATCH (e:Storynode {id: row.from})
+MATCH (c:Storynode {id: row.to})
+MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
 ----
 
-
+//// delete commands
 [source]
 ----
 MATCH ()-[r:CONNECTS_TO]->()
@@ -133,6 +141,7 @@ DELETE r
 MATCH (n:Storynode)
 DELETE n
 ----
+////
 
 Defining special nodes
 ~~~~~~~~~~~~~~~~~~~~~~
