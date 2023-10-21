@@ -9,22 +9,38 @@ A text-based adventure in Neo4j
 About the project
 -----------------
 
-I drew inspiration from link:https://neo4j.com/blog/vampire-express-graph-database-choose-your-own-adventure/[Vampire Express: Graphing a Classic ’80s Choose Your Own Adventure Story] by Joe Depeau, one of the suggestions from the challenge text.
+I drew inspiration from link:https://neo4j.com/blog/vampire-express-graph-database-choose-your-own-adventure/[Vampire Express: Graphing a Classic ’80s Choose Your Own Adventure Story] by Joe Depeau, one of the suggestions included in _Technical Writing challenge 1.4 - Google Docs.pdf_.
 
-some interesting aspects about graph representations of such text-based adventures in link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books]
+I first discovered _Choose Your Own Adventures_ when I was a teenager.
+At the time I had a physical copy, a booklet that related thematically to a tabletop role-playing game.
+It had me look up pages to proceed with the story and I really liked the unique way of interacting with the text, rather than just consuming the content.
 
-link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[praise]
+Graph-based models of _Choose Your Own Adventures_ are well explored.
+For example, some interesting aspects of such graph representations are covered in link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books] by Sarah Laskow.
 
-link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[get it here]
+Unfortunately, I no longer had the booklet from 20 years ago (and I think it was in German language) nor any other _Choose Your Own Adventure_ books at the ready.
+Instead, I went online and looked for a suitable digital model.
 
-Preparing the data model
-------------------------
+The data model
+--------------
 
 Getting hold of usable source data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Download +The Terror Aboard The Speedwell 1.2.zip+.
-Luckily, the file +The Terror Aboard The Speedwell 1.2.html+ contains a list of +div+-elements with all text snippets for the story.
+I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside _Choose Your Own Advenutre_.
+
+I found the article link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[The best Alien game is a text adventure] by Danielle Riendeau which highly praised the adventure _Terror Aboard the Speedwell_.
+An entirely free and playable version can be found link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[here].
+
+.To download the game:
+. Click +Download+.
+. In the overlay, click +No thanks, just take me to the downloads+ above the donation input.
+. For the HTML-based version, +Download+ _The Terror Aboard The Speedwell 1.2.zip_.
+
+Luckily, the HTML-based version contained the entire adventure as a set of +div+-elements.
+
+Extracting the data
+~~~~~~~~~~~~~~~~~~~
 
 I used Python to parse the HTML and to convert the data to CSV.
 Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
