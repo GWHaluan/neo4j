@@ -29,18 +29,25 @@ Getting hold of usable source data
 
 I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside _Choose Your Own Advenutre_.
 
-I found the article link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[The best Alien game is a text adventure] by Danielle Riendeau which highly praised the adventure _Terror Aboard the Speedwell_.
-An entirely free and playable version can be found link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[here].
+I found the article link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[The best Alien game is a text adventure] by Danielle Riendeau which highly praises the adventure _The Terror Aboard the Speedwell_, written by Javy Gwaltney.
+A free and playable version can be found link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[here].
 
 .To download the game:
-. Click +Download+.
-. In the overlay, click +No thanks, just take me to the downloads+ above the donation input.
-. For the HTML-based version, +Download+ _The Terror Aboard The Speedwell 1.2.zip_.
+. Click *Download*.
+. In the overlay, click *No thanks, just take me to the downloads* above the donation input.
+. For the HTML-based version, *Download* _The Terror Aboard The Speedwell 1.2.zip_ and unzip it.
 
-Luckily, the HTML-based version contained the entire adventure as a set of +div+-elements.
+Luckily, the HTML-based version contains the entire adventure as a set of +div+-elements which are sufficiently readable and more importantly easy to process.
 
 Extracting the data
 ~~~~~~~~~~~~~~~~~~~
+
+The +div+-elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
+
+[source,html]
+---
+<div tiddler="Begin" tags="" created="201408261301" modifier="twee" twine-position="1835,240">The homeworld is nothing like you thought it would be. The landscape is black as tar and the temperature readings make you thankful for the air conditioning in your suit.\n\nThe crater, the reason for your journey, is dead ahead, a half mile in the distance. You don't mind the trek; this is a far cry from the 35 million miles you and your crew had to traverse for two months.\n\nWhat a long way you’ve come, you muse. But what is an ending but the beginning of another journey, wrote…who wrote that? You wrack your brain for an answer. The answer is just outside the limits of your consciousness, floating. You reach for it, grasp its tail, and then—\n\nSergeant Ryan Benson turns around to look at you.\n\n1.[[“Julia,” he says.]]\n2.[[“Zoe,” he says.]]\n\n</div>
+---
 
 I used Python to parse the HTML and to convert the data to CSV.
 Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
