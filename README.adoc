@@ -149,7 +149,7 @@ With that, and the use of the hierarchical layout in Neo4j Workspace, the graph 
 
 image::images/graph_complete.png[Complete graph]
 
-=== Annotating start and end nodes
+=== Labeling start and end nodes
 
 The graph is still missing the important detail of start and end nodes.
 Rather than looking them up manually, I tried the following Cypher queries to detect them.
@@ -170,7 +170,29 @@ image::images/start_nodes.png[Start nodes]
 There are four start nodes, three of which are not actually start nodes.
 No +div+ element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_.
 The real start node is selected in the image.
-I added the `start_node` label manually to that node.
+
+I added the `start_node` label to that node with the following Cypher query:
+
+[source]
+----
+MATCH (s:story_node {id: 'Start'})
+SET s:start_node
+RETURN s
+----
+
+Afterwards, I added the `fake_start_node` label to the other three nodes with the following Cypher query:
+
+[source]
+----
+MATCH (s:story_node)
+WHERE NOT ()-[:CONNECTS_TO]->(s)
+AND NOT (s:start_node)
+AND (s)-[:CONNECTS_TO]->()
+SET s:fake_start_node
+RETURN s
+----
+
+Finally, only the labels for end nodes are missing.
 
 .Cypher query for end nodes nodes:
 [source]
@@ -193,8 +215,16 @@ MATCH (s:story_node)
 WHERE ()-[:CONNECTS_TO]->(s)
 AND NOT (s)-[:CONNECTS_TO]->()
 SET s:end_node
-RETURN s.name, labels(s) AS labels
+RETURN s
 ----
+
+With start nodes, fake start nodes and end nodes highlighted, the graph looks like this:
+
+image::images/graph_complete_with_special_nodes_hierarchical.png[Complete graph with special nodes hierarchical]
+
+The force-based layout is a little compacter:
+
+image::images/graph_complete_with_special_nodes_force_based.png[Complete graph with special nodes force-based]
 
 == Querying the adventure graph
 
@@ -217,7 +247,7 @@ RETURN s
 
 The image below reveals that these nodes hold information about the author, the title and the game settings:
 
-image::images/nodes_without_connections.png[Nodes without connections]
+image::images/nodes_without_relations.png[Nodes without relations]
 
 Apparently they were encoded as +div+ elements like the actual story nodes.
 
