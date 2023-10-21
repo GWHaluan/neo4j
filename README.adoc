@@ -44,6 +44,7 @@ Extracting the data
 
 The +div+-elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
 
+.Pretty-printed +div+-element with a story snippet
 [source,html]
 ----
 <div tiddler="Begin" tags="" created="201408261301" modifier="twee" twine-position="1835,240">
@@ -57,7 +58,6 @@ Sergeant Ryan Benson turns around to look at you.
 
 1.[[“Julia,” he says.]]
 2.[[“Zoe,” he says.]]
-
 </div>
 ----
 
