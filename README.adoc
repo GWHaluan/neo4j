@@ -327,3 +327,10 @@ image::images/edges_import.png[Edges import]
 I would have liked to include something substantial about circles in the graph.
 Everything I've tried failed because the procedures were running for a very long time.
 I suspect this is due to the relatively large graph size and the fact that there are a lot of circles.
+
+=== Limitations of GitHub with respect to Asciidoc
+
+Some more sophisticated features which Asciidoc usually provides don't work in the GitHub rendering:
+
+. +include+ - For a clearer structure I would have liked to split the content up a little.
+. Custom IDs and references - I tried to add a custom ID to an image and then reference the image directly which did not work unfortunately.
