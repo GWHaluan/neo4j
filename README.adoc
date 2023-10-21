@@ -332,5 +332,5 @@ I suspect this is due to the relatively large graph size and the fact that there
 
 Some more sophisticated features which Asciidoc usually provides don't work in the GitHub rendering:
 
-. `include` - For a clearer structure I would have liked to split the content up a little.
-. Custom IDs and references - I tried to add a custom ID to an image and then reference the image directly which did not work unfortunately.
+. `include` - For a clearer structure I would have liked to split up the content.
+. Custom IDs and references - I tried to add a custom ID to an image to create an anchor and then add a link reference to the anchor which did not work unfortunately.
