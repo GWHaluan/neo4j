@@ -1,17 +1,12 @@
-Main Header
+A text-based adventure in Neo4j
 ===========
 :Author:    Richard Sill
 :Email:     <rschroed2009@gmx.de>
 :Date       21.10.2023
 :Revision:  1.0
 
-A text-based adventure in Neo4j
--------------------------------
-
-
-
 About the project
-~~~~~~~~~~~~~~~~~
+-----------------
 
 I drew inspiration from link:https://neo4j.com/blog/vampire-express-graph-database-choose-your-own-adventure/[Vampire Express: Graphing a Classic ’80s Choose Your Own Adventure Story] by Joe Depeau, one of the suggestions from the challenge text.
 
@@ -22,10 +17,10 @@ link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the
 link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[get it here]
 
 Preparing the data model
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Getting hold of usable source data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Download +The Terror Aboard The Speedwell 1.2.zip+.
 Luckily, the file +The Terror Aboard The Speedwell 1.2.html+ contains a list of +div+-elements with all text snippets for the story.
@@ -36,7 +31,7 @@ Then I used Neo4j's CSV upload to populate my project with both node and edge da
 See the link:divparser.py[Python script] for reference.
 
 Populating the Neo4j graph
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [source]
 ----
@@ -64,24 +59,24 @@ DELETE n
 ----
 
 Defining special nodes
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 Sample text.
 
 Querying the adventure graph
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 Q: Are there any circles in the story?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Courtesy of Joe Depeau.
 
 Q: Are there unreachable story steps?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample text.
 
 Q: Which paths finish the story? Survival or fatality?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample text.
