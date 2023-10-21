@@ -1,13 +1,12 @@
-A text-based adventure in Neo4j
-===============================
+= A text-based adventure in Neo4j
+
 :Author:    Richard Sill
 :Email:     <rschroed2009@gmx.de>
 :Date:       21.10.2023
 :Revision:  1.0
 
 
-About the project
------------------
+== About the project
 
 I drew inspiration from link:https://neo4j.com/blog/vampire-express-graph-database-choose-your-own-adventure/[Vampire Express: Graphing a Classic ’80s Choose Your Own Adventure Story] by Joe Depeau, one of the suggestions included in _Technical Writing challenge 1.4 - Google Docs.pdf_.
 
@@ -21,11 +20,10 @@ For example, some interesting aspects of such graph representations are covered 
 Unfortunately, I no longer had the booklet from 20 years ago (and I think it was in German language) nor any other _Choose Your Own Adventure_ books at the ready.
 Instead, I went online and looked for a suitable digital model.
 
-The data model
---------------
+=== The data model
 
-Getting hold of usable source data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==== Getting hold of usable source data
+
 
 I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside _Choose Your Own Advenutre_.
 
@@ -115,7 +113,7 @@ First, I loaded up the two files _nodes.csv_ and _edges.csv_ this GitHub reposit
 [source]
 ----
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/nodes.csv" AS row
-MERGE (c:Storynode {id: row.incoming, text: row.text});
+MERGE (c:story_node {id: row.incoming, text: row.text});
 ----
 
 Note that I call values from the *incoming* column `id` in the Neo4j data model.
@@ -124,8 +122,8 @@ Note that I call values from the *incoming* column `id` in the Neo4j data model.
 [source]
 ----
 LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/main/edges.csv" AS row
-MATCH (e:Storynode {id: row.from})
-MATCH (c:Storynode {id: row.to})
+MATCH (e:story_node {id: row.from})
+MATCH (c:story_node {id: row.to})
 MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
 ----
 
@@ -144,7 +142,7 @@ DELETE r
 
 [source]
 ----
-MATCH (n:Storynode)
+MATCH (n:story_node)
 DELETE n
 ----
 --
@@ -153,18 +151,23 @@ With that, and the use of the hierarchical layout in Neo4j Workspace, the graph 
 
 image::images/graph_complete.png[Complete graph]
 
-Defining special nodes
-~~~~~~~~~~~~~~~~~~~~~~
+Annotating start and end nodes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The start node
-^^^^^^^^^^^^^^
+The graph is still missing the important detail of start and end nodes.
+Rather than looking them up manually, I tried the following Cypher queries to detect them.
 
-Sample text.
+.Cypher query for start nodes:
+[source]
+----
+LOAD
+----
 
-End nodes
-^^^^^^^^^
-
-Sample text.
+.Cypher query for end nodes nodes:
+[source]
+----
+LOAD
+----
 
 Querying the adventure graph
 ----------------------------
@@ -174,10 +177,10 @@ Q: Are there any circles in the story?
 
 Courtesy of Joe Depeau.
 
-Q: Are there unreachable story steps?
+Q: Are there unreachable story nodes?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Courtesy of Joe Depeau.
+A quick glance at the complete graph
 
 Q: Which paths finish the story? Survival or fatality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -194,6 +197,8 @@ Challenges
 
 This section is arguably a bit off-topic.
 It contains some notes on the execution of the project and what difficulties i faced while doing it.
+
+Nonetheless, I'd like to make clear that the project has been incredibly fun 🧑‍💻
 
 Which Neo4j environment to use?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
