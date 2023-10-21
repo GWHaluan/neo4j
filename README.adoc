@@ -60,12 +60,29 @@ Sergeant Ryan Benson turns around to look at you.
 </div>
 ----
 
-[Note]
-====
-Occurrences of `\n` have been replaced with a carriage return in the listing above.
-====
+[source,html]
+----
+<div tiddler="“Julia,” he says." tags="" created="201401271139" modifier="twee" twine-position="245,163">
+“Julia, everything okay? You’ve got that look in your eyes.”
 
-I used Python to parse the HTML and to convert the data to CSV.
+Ryan constantly feels some need to ask if you’re all right. Either out of attraction or platonic concern, you’re not sure which. However, you are certain that it bugs the snot out of you.
+
+1.[[&quot;Yes, I’m fine.&quot;]]
+2.[[&quot;Yes, Ryan, I’m fine.&quot;]]
+3.[[&quot;I’m fine.&quot;]]
+</div>
+----
+
+Note that occurrences of `\n` have been replaced with a carriage return in the listings above.
+
+.Observations:
+. The +tiddler+-attribute of a +div+-element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
+. Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found earlier throughout the text.
+
+I wrote a link:divparser.py[Python script] to parse the +div+-elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
+I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
+
+
 Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
 
 See the link:divparser.py[Python script] for reference.
