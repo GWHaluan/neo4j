@@ -118,7 +118,7 @@ LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/mai
 MERGE (c:Storynode {id: row.incoming, text: row.text});
 ----
 
-Note that I call values from the *incoming* column ``id``s in the Neo4j data model.
+Note that I call values from the *incoming* column `id` in the Neo4j data model.
 
 .Cypher query for _edges.csv_:
 [source]
@@ -128,6 +128,8 @@ MATCH (e:Storynode {id: row.from})
 MATCH (c:Storynode {id: row.to})
 MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
 ----
+
+Each `CONNECTS_TO`-edge gets a label `choice` with the value of the *to*-node.
 
 [comment]
 --
