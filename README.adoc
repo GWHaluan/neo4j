@@ -5,6 +5,7 @@ A text-based adventure in Neo4j
 :Date       21.10.2023
 :Revision:  1.0
 
+
 About the project
 -----------------
 
