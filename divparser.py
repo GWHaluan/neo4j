@@ -21,60 +21,56 @@ global in_div
 in_div = False
 
 class Divparser(HTMLParser):
-
     def handle_starttag(self, tag, attrs):
         if (tag == "div"):
-
-            print("Encountered a start tag :", tag)
-            print(attrs)
+            # encountered a div start tag
             if (attrs[0][0] == "tiddler" and attrs[1][0] == "tags" and (attrs[1][1] == "stylesheet" or attrs[1][1] == "Twine.image")):
-                print("skipping entry")
+                continue
             else:
                 if (attrs[0][0] == "tiddler"):
                     global div_entries
                     global current_div
                     global in_div
                     current_div["incoming"] = attrs[0][1]
-                    print("attrs ", attrs[0][1])
                     in_div = True
-                    print(in_div)
 
     def handle_data(self, data):
         global div_entries
         global current_div
         global in_div
         if (in_div):
-            print("Encountered some data  :")
-            print(data)
+            # inside div, this is the text node data.
             current_div["text"] = data
 
     def handle_endtag(self, tag):
         if (tag == "div"):
+            # encountered a div end tag.
             global div_entries
             global current_div
             global number_of_tiddlers
             global in_div
             if ("incoming" in current_div.keys() and "text" in current_div.keys()):
+                # add it only if the div has both fields.
                 div_entries.append(current_div)
                 number_of_tiddlers = number_of_tiddlers + 1
             current_div = {}
             in_div = False
-            print("Encountered an end tag :", tag)
-            print("")
 
 parser = Divparser()
 filepath= os.path.join("The Terror Aboard The Speedwell 1.2.html")
+# test file is short.html, with just a couple of divs:
 #filepath= os.path.join("short.html")
 file = open(filepath, 'r+')
 # .read() because it's easier for a limited file.
 the_html = file.read()
 parser.feed(the_html)
 
+# get rid of problematic special characters.
 def normalize_story_string(story_string):
-    print(story_string)
     normalized_story_string = story_string.replace("“", "\"").replace("”","\"").replace("\"", "\"\"").replace("…", "...").replace("’", "'")
     return normalized_story_string
 
+# create a csv file with the nodes.
 f = open("nodes.csv", "w")
 the_csv = "incoming,text\n"
 for div in div_entries:
@@ -89,21 +85,11 @@ edges = []
 
 # get the edges from the nodes.
 for div in div_entries:
-    print("")
-    print("---")
-    print("")
-    print("div inc: ", div["incoming"])
-    print("div text: ", div["text"])
-    print("")
-
     div_text = div["text"]
     for match in re.finditer(r"\[\[(.*?)\]\]", div_text):
-        print(match.group(1))
-        print("adding edge: ", [div["incoming"], match.group(1)])
         edges.append([div["incoming"], match.group(1)])
 
-#print(edges)
-
+# create a csv file with the edges.
 f = open("edges.csv", "w")
 the_csv = "from,to\n"
 for edge in edges:
@@ -112,5 +98,3 @@ for edge in edges:
     the_csv = the_csv +"\""+ edge_from +"\",\""+edge_to+"\"\n"
 f.write(the_csv)
 f.close()
-
-print(number_of_tiddlers)
