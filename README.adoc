@@ -35,11 +35,11 @@ A free and playable version can be found link:https://jgwaltneiv.itch.io/the-ter
 . In the overlay, click *No thanks, just take me to the downloads* above the donation input.
 . For the HTML-based version, *Download* _The Terror Aboard The Speedwell 1.2.zip_ and unzip it.
 
-Luckily, the HTML-based version contains the entire adventure as a set of +div+-elements which are sufficiently readable and more importantly easy to process.
+Luckily, the HTML-based version contains the entire adventure as a set of +div+ elements which are sufficiently readable and more importantly easy to process.
 
 === Extracting the data
 
-The +div+-elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
+The +div+ elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
 
 [source,html]
 ----
@@ -73,10 +73,10 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 Note that occurrences of `\n` have been replaced with a carriage return in the listings above.
 
 .Observations:
-. The +tiddler+-attribute of a +div+-element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
+. The +tiddler+-attribute of a +div+ element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
 . Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found earlier throughout the text.
 
-I wrote a link:divparser.py[Python script] to parse the +div+-elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
+I wrote a link:divparser.py[Python script] to parse the +div+ elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
 I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
 
 ._nodes.csv_:
@@ -147,7 +147,6 @@ DELETE n
 
 With that, and the use of the hierarchical layout in Neo4j Workspace, the graph looks like this:
 
-[#graph_complete]
 image::images/graph_complete.png[Complete graph]
 
 === Annotating start and end nodes
@@ -158,13 +157,43 @@ Rather than looking them up manually, I tried the following Cypher queries to de
 .Cypher query for start nodes:
 [source]
 ----
-LOAD
+MATCH (s:story_node)
+WHERE NOT ()-[:CONNECTS_TO]->(s)
+AND (s)-[:CONNECTS_TO]->()
+RETURN s
 ----
+
+The query yielded an unexpected result:
+
+image::images/start_nodes.png[Start nodes]
+
+There are four start nodes, three of which are not actually start nodes.
+No +div+ element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_.
+The real start node is selected in the image.
+I added the `start_node` label manually to that node.
 
 .Cypher query for end nodes nodes:
 [source]
 ----
-LOAD
+MATCH (s:story_node)
+WHERE ()-[:CONNECTS_TO]->(s)
+AND NOT (s)-[:CONNECTS_TO]->()
+RETURN s
+----
+
+image::images/end_nodes.png[End nodes]
+
+The image reveals that there is a total of 54 end nodes.
+I double-checked the `text` properties of the nodes and they all contain a "The End" towards the end.
+
+.Cypher query to add the `end_node` label:
+[source]
+----
+MATCH (s:story_node)
+WHERE ()-[:CONNECTS_TO]->(s)
+AND NOT (s)-[:CONNECTS_TO]->()
+SET s:end_node
+RETURN s.name, labels(s) AS labels
 ----
 
 == Querying the adventure graph
@@ -175,7 +204,22 @@ Courtesy of Joe Depeau.
 
 === Q: Are there unreachable story nodes?
 
-A quick glance at the link:#complete_graph[complete graph]
+A quick glance at the complete graph in link:#populating-the-neo4j-graph[] reveals three nodes that are not connected to the rest of the graph.
+The following Cypher query lists the exact three nodes:
+
+[source]
+----
+MATCH (s:story_node)
+WHERE NOT ()-[:CONNECTS_TO]->(s)
+AND NOT (s)-[:CONNECTS_TO]->()
+RETURN s
+----
+
+The image below reveals that these nodes hold information about the author, the title and the game settings:
+
+image::images/nodes_without_connections.png[Nodes without connections]
+
+Apparently they were encoded as +div+ elements like the actual story nodes.
 
 === Q: Which paths finish the story? Survival or fatality?
 
