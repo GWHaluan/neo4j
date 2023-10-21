@@ -118,7 +118,7 @@ LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/mai
 MERGE (c:Storynode {id: row.incoming, text: row.text});
 ----
 
-Note that I call values from the *incoming* column `id` s in the Neo4j data model.
+Note that I call values from the *incoming* column ``id``s in the Neo4j data model.
 
 .Cypher query for _edges.csv_:
 [source]
