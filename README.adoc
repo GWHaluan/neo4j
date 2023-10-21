@@ -218,7 +218,7 @@ SET s:end_node
 RETURN s
 ----
 
-With start nodes, fake start nodes and end nodes highlighted, the graph looks like this:
+With start nodes, fake start nodes and end nodes highlighted in green, yellow and red, the graph looks like this:
 
 image::images/graph_complete_with_special_nodes_hierarchical.png[Complete graph with special nodes hierarchical]
 
@@ -227,10 +227,6 @@ The force-based layout is a little compacter:
 image::images/graph_complete_with_special_nodes_force_based.png[Complete graph with special nodes force-based]
 
 == Querying the adventure graph
-
-=== Q: Are there any circles in the story?
-
-Courtesy of Joe Depeau.
 
 === Q: Are there unreachable story nodes?
 
@@ -251,13 +247,50 @@ image::images/nodes_without_relations.png[Nodes without relations]
 
 Apparently they were encoded as +div+ elements like the actual story nodes.
 
-=== Q: Which paths finish the story? Survival or fatality?
+=== Q: What's the quickest way to beat the story? What's the longest route?
 
-Sample text.
+.Cypher query to find the shortest path or paths:
+[source]
+----
+MATCH path=shortestPath((:start_node)-[:CONNECTS_TO*1..]->(:end_node))
+WITH collect(path) as paths, collect(length(path)) as lengths
+UNWIND paths as p
+WITH p WHERE length(p) = apoc.coll.min(lengths)
+RETURN p
+----
 
-=== Q: What's the quickest way to beat the story? What's the quickest way to die?
+It query yields a single result with a length of 20 (start node, 18 story nodes, end node):
 
-Sample text.
+image::images/path_shortest.png[Shortest path]
+
+.Cypher query to find the longest path or paths:
+[source]
+----
+MATCH path=shortestPath((:start_node)-[:CONNECTS_TO*1..]->(:end_node))
+WITH collect(path) as paths, collect(length(path)) as lengths
+UNWIND paths as p
+WITH p WHERE length(p) = apoc.coll.max(lengths)
+RETURN p
+----
+
+The reverse query with the `max` length instead of `min` length yields six results with a length of 100 (start node, 98 story nodes and one of the six end nodes):
+
+image::images/path_longest[Longest paths]
+
+Note that I had to add `shortestPath` to avoid the circles in the graph.
+The queries are based on a similar query by Joe Depeau.
+
+=== Q: Is there a path from the fake start nodes to end nodes?
+
+.Cypher query to find paths from fake start nodes to end nodes:
+[source]
+----
+MATCH path=shortestPath((:fake_start_node)-[:CONNECTS_TO*1..]->(:end_node))
+RETURN path
+----
+
+I downloaded the link:neo4j_query_table_paths_from_fake_start_nodes.csv[CSV file] for the query and included it in the repository.
+It reveals that there are 106 different paths from fake start nodes to end nodes.
 
 == Challenges
 
@@ -288,3 +321,9 @@ Especially a set of special characters that were used inconsistently throughout 
 Fun fact: link:edges.csv[edges.csv] contains 1148 lines, however upon import, Neo4j apparently created 1172 relationships. I'm still not sure why exactly:
 
 image::images/edges_import.png[Edges import]
+
+=== Circles in the graph
+
+I would have liked to include something substantial about circles in the graph.
+Everything I've tried failed because the procedures were running for a very long time.
+I suspect this is due to the relatively large graph size and the fact that there are a lot of circles.
