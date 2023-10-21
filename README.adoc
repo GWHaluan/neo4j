@@ -20,9 +20,9 @@ For example, some interesting aspects of such graph representations are covered 
 Unfortunately, I no longer had the booklet from 20 years ago (and I think it was in German language) nor any other _Choose Your Own Adventure_ books at the ready.
 Instead, I went online and looked for a suitable digital model.
 
-=== The data model
+== The data model
 
-==== Getting hold of usable source data
+=== Getting hold of usable source data
 
 
 I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside _Choose Your Own Advenutre_.
@@ -37,8 +37,7 @@ A free and playable version can be found link:https://jgwaltneiv.itch.io/the-ter
 
 Luckily, the HTML-based version contains the entire adventure as a set of +div+-elements which are sufficiently readable and more importantly easy to process.
 
-Extracting the data
-~~~~~~~~~~~~~~~~~~~
+=== Extracting the data
 
 The +div+-elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
 
@@ -104,8 +103,7 @@ from,to
 
 Each edge is represented by the tuple made up of the IDs of the source and target nodes.
 
-Populating the Neo4j graph
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Populating the Neo4j graph
 
 First, I loaded up the two files _nodes.csv_ and _edges.csv_ this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to Neo4j via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
 
@@ -149,10 +147,10 @@ DELETE n
 
 With that, and the use of the hierarchical layout in Neo4j Workspace, the graph looks like this:
 
+[#graph_complete]
 image::images/graph_complete.png[Complete graph]
 
-Annotating start and end nodes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Annotating start and end nodes
 
 The graph is still missing the important detail of start and end nodes.
 Rather than looking them up manually, I tried the following Cypher queries to detect them.
@@ -169,39 +167,31 @@ LOAD
 LOAD
 ----
 
-Querying the adventure graph
-----------------------------
+== Querying the adventure graph
 
-Q: Are there any circles in the story?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Q: Are there any circles in the story?
 
 Courtesy of Joe Depeau.
 
-Q: Are there unreachable story nodes?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Q: Are there unreachable story nodes?
 
-A quick glance at the complete graph
+A quick glance at the link:#complete_graph[complete graph]
 
-Q: Which paths finish the story? Survival or fatality?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Q: Which paths finish the story? Survival or fatality?
 
 Sample text.
 
-Q: What's the quickest way to beat the story? What's the quickest way to die?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Q: What's the quickest way to beat the story? What's the quickest way to die?
 
 Sample text.
 
-Challenges
-----------
+== Challenges
 
-This section is arguably a bit off-topic.
-It contains some notes on the execution of the project and what difficulties i faced while doing it.
+This section contains some notes on the execution of the project and what difficulties i faced while doing it.
 
 Nonetheless, I'd like to make clear that the project has been incredibly fun 🧑‍💻
 
-Which Neo4j environment to use?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Which Neo4j environment to use?
 
 Once I had a proof of concept data set in CSV format, I tried to access Neo4j.
 
@@ -215,8 +205,7 @@ I installed the suggestion version (Oracle Java SDK 17), yet the same error mess
 Back to Neo4j Sandbox, I noticed that I could select *Continue with LinkedIn*.
 This worked fine, and the environment I used for the remainder of the project was Neo4j Sandbox, with a blank sandbox and opened with Workspace. ✅
 
-From proof of concept to Python script and valid CSV
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== From proof of concept to Python script and valid CSV files
 
 While the proof of concept was implemented quickly, the actual realization of the project surpassed my expectations in terms of effort.
 
