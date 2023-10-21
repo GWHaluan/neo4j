@@ -104,7 +104,7 @@ from,to
 ...
 ----
 
-Every edge is represented by the tuple made up of the IDs of the source and target nodes.
+Each edge is represented by the tuple made up of the IDs of the source and target nodes.
 
 Populating the Neo4j graph
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,7 +129,7 @@ MATCH (c:Storynode {id: row.to})
 MERGE (e)-[rel1:CONNECTS_TO]->(c) ON CREATE SET rel1.choice = row.to;
 ----
 
-Each `CONNECTS_TO`-edge gets a label `choice` with the value of the *to*-node.
+Each `CONNECTS_TO`-edge gets a label `choice` with the ID of the node associated with the *to* column.
 
 [comment]
 --
@@ -149,10 +149,24 @@ DELETE n
 ----
 --
 
+With that, and the use of the hierarchical layout in Neo4j Workspace, the graph looks like this:
+
+image::images/graph_complete.png[Complete graph]
+
 Defining special nodes
 ~~~~~~~~~~~~~~~~~~~~~~
 
+The start node
+^^^^^^^^^^^^^^
+
 Sample text.
+
+End nodes
+^^^^^^^^^
+
+Sample text.
+
+
 
 Querying the adventure graph
 ----------------------------
@@ -165,9 +179,14 @@ Courtesy of Joe Depeau.
 Q: Are there unreachable story steps?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sample text.
+Courtesy of Joe Depeau.
 
 Q: Which paths finish the story? Survival or fatality?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sample text.
+
+Q: What's the quickest way to beat the story? What's the quickest way to die?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample text.
