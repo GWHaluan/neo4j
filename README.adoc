@@ -44,7 +44,6 @@ Extracting the data
 
 The +div+-elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
 
-.Pretty-printed +div+-element with a story snippet
 [source,html]
 ----
 <div tiddler="Begin" tags="" created="201408261301" modifier="twee" twine-position="1835,240">
@@ -60,6 +59,11 @@ Sergeant Ryan Benson turns around to look at you.
 2.[[“Zoe,” he says.]]
 </div>
 ----
+
+[Note]
+====
+Occurrences of `\n` have been replaced with a carriage return in the listing above.
+====
 
 I used Python to parse the HTML and to convert the data to CSV.
 Then I used Neo4j's CSV upload to populate my project with both node and edge data from the HTML file.
