@@ -166,8 +166,6 @@ End nodes
 
 Sample text.
 
-
-
 Querying the adventure graph
 ----------------------------
 
@@ -190,3 +188,35 @@ Q: What's the quickest way to beat the story? What's the quickest way to die?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample text.
+
+Challenges
+----------
+
+This section is arguably a bit off-topic.
+It contains some notes on the execution of the project and what difficulties i faced while doing it.
+
+Which Neo4j environment to use?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once I had a proof of concept data set in CSV format, I tried to access Neo4j.
+
+First, I tried registering two of my email addresses for both link:https://neo4j.com/sandbox/[Neo4j Sandbox] and link:https://neo4j.com/cloud/platform/aura-graph-database/[Neo4j Aura DB].
+For some reason, I never received a confirmation email. ⛔
+
+Next, I downloaded link:https://neo4j.com/download/[Neo4j Desktop].
+Loading the CSV files into the application posed a problem - apparently my system lacked the correct Java version (or, for starters, any Java version).
+I installed the suggestion version (Oracle Java SDK 17), yet the same error message occurred. ⛔
+
+Back to Neo4j Sandbox, I noticed that I could select *Continue with LinkedIn*.
+This worked fine, and the environment I used for the remainder of the project was Neo4j Sandbox, with a blank sandbox and opened with Workspace. ✅
+
+From proof of concept to Python script and valid CSV
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+While the proof of concept was implemented quickly, the actual realization of the project surpassed my expectations in terms of effort.
+
+Especially a set of special characters that were used inconsistently throughout the source HTML file required several debugging and refining steps before I ended up with a usable set of CSV files that I could upload.
+
+Fun fact: link:edges.csv[edges.csv] contains 1148 lines, however upon import, Neo4j apparently created 1172 relationships. I'm still not sure why exactly:
+
+image::images/edges_import.png[Edges import]
