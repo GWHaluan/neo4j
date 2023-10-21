@@ -275,7 +275,7 @@ RETURN p
 
 The reverse query with the `max` length instead of `min` length yields six results with a length of 100 (start node, 98 story nodes and one of the six end nodes):
 
-image::images/path_longest[Longest paths]
+image::images/path_longest.png[Longest paths]
 
 Note that I had to add `shortestPath` to avoid the circles in the graph.
 The queries are based on a similar query by Joe Depeau.
