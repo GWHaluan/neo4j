@@ -1,5 +1,5 @@
 A text-based adventure in Neo4j
-===========
+===============================
 :Author:    Richard Sill
 :Email:     <rschroed2009@gmx.de>
 :Date:       21.10.2023
