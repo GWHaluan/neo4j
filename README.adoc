@@ -244,7 +244,7 @@ With the data model set up, I used further queries to find out more about the gr
 
 === Q: Are there unreachable story nodes?
 
-A quick glance at the complete graph in link:#populating-the-neo4j-graph[] reveals three nodes that are not connected to the rest of the graph.
+A quick glance at the complete graph in link:#populating-the-neo4j-graph[Populating the Neo4j graph] reveals three nodes that are not connected to the rest of the graph.
 The following Cypher query lists the exact three nodes:
 
 [source]
