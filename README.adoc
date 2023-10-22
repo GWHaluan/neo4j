@@ -68,7 +68,6 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 ----
 
 [NOTE]
-.Test
 ====
 Note that I replaced occurrences of `\n` with a carriage return in the listings above to make them more readable.
 ====
