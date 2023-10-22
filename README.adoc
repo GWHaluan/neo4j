@@ -15,7 +15,7 @@ At the time I had a physical copy, a booklet that related thematically to a tabl
 It had me look up pages to proceed with the story and I really liked the unique way of interacting with the text, rather than just consuming its content.
 
 Graph-based models of _Choose Your Own Adventures_ are well explored.
-For example, link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books] by Sarah Laskow covers some interesting aspects of such graph representations.
+For example, link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books] by Sarah Laskow covers some insights to be gained from such graph representations.
 
 Unfortunately, I no longer had the booklet from 20 years ago (and I think it was in German language) nor any other _Choose Your Own Adventure_ books at the ready.
 Instead, I went online and looked for a suitable digital text.
@@ -43,6 +43,7 @@ The `div` elements with the story snippets inside _The Terror Aboard The Speedwe
 
 [source,html]
 ----
+...
 <div tiddler="Begin" tags="" created="201408261301" modifier="twee" twine-position="1835,240">
 The homeworld is nothing like you thought it would be. The landscape is black as tar and the temperature readings make you thankful for the air conditioning in your suit.
 
@@ -65,6 +66,7 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 2.[[&quot;Yes, Ryan, I’m fine.&quot;]]
 3.[[&quot;I’m fine.&quot;]]
 </div>
+...
 ----
 
 [NOTE]
@@ -75,7 +77,7 @@ I replaced occurrences of `\n` with a carriage return in the listings above to m
 
 .Observations:
 . The `tiddler` attribute of a `div` element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
-. Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found throughout the text, without a number.
+. Outgoing connections are typically enumerated as a list of links which are embedded in double square brackets. Occasionally they can also be found throughout the text without a number.
 
 I wrote a link:divparser.py[Python script] to parse the `div` elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
 I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
@@ -160,7 +162,7 @@ image::images/graph_edge.png[An edge in the graph]
 
 === Labeling start and end nodes
 
-The graph is still missing start and end nodes.
+The graph is still missing highlighting for start and end nodes.
 Rather than looking them up and adding them manually, I used the following Cypher queries to detect them.
 
 .Cypher query to detect start nodes:
@@ -311,7 +313,7 @@ It reveals that there are 106 different paths from fake start nodes to end nodes
 
 This section contains some notes on the execution of the project and what difficulties i faced while working on it.
 
-I'd also like to make clear that the project has been incredibly fun 🧑‍💻
+I'd also like to make clear that the project has been incredibly fun. 🧑‍💻
 
 === Which Neo4j environment to use?
 
@@ -331,7 +333,7 @@ This worked fine, and the environment I used for the remainder of the project wa
 
 While the proof of concept was implemented quickly, the actual realization of the project took a little longer than planned.
 
-Especially a set of special characters that were used inconsistently throughout the source HTML file required several debugging and refining steps before I ended up with a usable set of CSV files that I could upload.
+Especially a set of special characters which were used inconsistently throughout the source HTML file required several debugging and refining steps before I ended up with a usable set of CSV files that I could upload.
 
 Fun fact: link:edges.csv[edges.csv] contains 1148 lines, however upon import, Neo4j apparently created 1172 relationships. I'm still not sure why exactly:
 
@@ -342,6 +344,11 @@ image::images/edges_import.png[Edges import]
 I would have liked to include something substantial about circles in the graph.
 Everything I've tried failed because the queries were running for a very long time.
 I suspect this is due to the relatively large graph size and the fact that there are a lot of circles.
+
+=== Color blindness
+
+While reviewing this document I noticed that my node highlighting colors (red, green and yellow) are not color blindness friendly.
+I searched the web for an online converter for images, but unfortunately could not find one.
 
 === Limitations of GitHub with respect to Asciidoc
 
