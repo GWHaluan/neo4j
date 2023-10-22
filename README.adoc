@@ -69,7 +69,7 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 
 [NOTE]
 ====
-Note that I replaced occurrences of `\n` with a carriage return in the listings above to make them more readable.
+I replaced occurrences of `\n` with a carriage return in the listings above to make them more readable.
 ====
 
 
@@ -106,7 +106,7 @@ Each edge is represented by the tuple made up of the IDs of the source and targe
 
 === Populating the Neo4j graph
 
-First, I loaded up the two files _nodes.csv_ and _edges.csv_ to this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to Neo4j via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
+First, I loaded up the two files _nodes.csv_ and _edges.csv_ to this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to my instance of Neo4j Sandbox via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
 
 .Cypher query for _nodes.csv_:
 [source]
@@ -115,7 +115,7 @@ LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/GWHaluan/neo4j/mai
 MERGE (c:story_node {id: row.incoming, text: row.text});
 ----
 
-Note that I call values from the *incoming* column `id` in the Neo4j data model.
+I call values from the *incoming* column `id` in the Neo4j data model.
 
 .Cypher query for _edges.csv_:
 [source]
@@ -146,16 +146,24 @@ DELETE n
 ----
 --
 
-With that, and the use of the hierarchical layout in Neo4j Workspace, the graph looks like this:
+With that, the hierarchical layout of the graph looks like this in Neo4j Workspace:
 
 image::images/graph_complete.png[Complete graph]
 
+A single node in the graph looks like this:
+
+image::images/graph_node.png[A node in the graph]
+
+A single edge in the graph looks like this:
+
+image::images/graph_edge.png[An edge in the graph]
+
 === Labeling start and end nodes
 
-The graph is still missing the important detail of start and end nodes.
-Rather than looking them up manually, I tried the following Cypher queries to detect them.
+The graph is still missing start and end nodes.
+Rather than looking them up and adding them manually, I used the following Cypher queries to detect them.
 
-.Cypher query for start nodes:
+.Cypher query to detect start nodes:
 [source]
 ----
 MATCH (s:story_node)
@@ -169,9 +177,10 @@ The query yielded an unexpected result:
 image::images/start_nodes.png[Start nodes]
 
 There are four start nodes, three of which are not actually start nodes.
-No `div` element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_.
-The real start node is selected in the image.
+No `div` element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_ either.
+The three nodes were probably never properly linked to the rest of the story when _The Terror Aboard The Speedwell_ was written.
 
+The real start node is selected in the image.
 I added the `start_node` label to that node with the following Cypher query:
 
 [source]
@@ -193,9 +202,9 @@ SET s:fake_start_node
 RETURN s
 ----
 
-Finally, only the labels for end nodes are missing.
+Finally, I tried to detect and label end nodes in a similar way.
 
-.Cypher query for end nodes nodes:
+.Cypher query to detect end nodes:
 [source]
 ----
 MATCH (s:story_node)
@@ -207,7 +216,7 @@ RETURN s
 image::images/end_nodes.png[End nodes]
 
 The image reveals that there is a total of 54 end nodes.
-I double-checked the `text` properties of the nodes and they all contain a "The End" towards the end.
+I double-checked the `text` properties of the nodes and they all contain the substring "The End".
 
 .Cypher query to add the `end_node` label:
 [source]
@@ -219,7 +228,7 @@ SET s:end_node
 RETURN s
 ----
 
-With start nodes, fake start nodes and end nodes highlighted in green, yellow and red, the graph looks like this:
+With start nodes, fake start nodes and end nodes highlighted in green, yellow and red respectively, the graph looks like this:
 
 image::images/graph_complete_with_special_nodes_hierarchical.png[Complete graph with special nodes hierarchical]
 
@@ -228,6 +237,8 @@ The force-based layout is a little compacter:
 image::images/graph_complete_with_special_nodes_force_based.png[Complete graph with special nodes force-based]
 
 == Querying the adventure graph
+
+With the data model set up, I used further queries to find out more about the graph.
 
 === Q: Are there unreachable story nodes?
 
@@ -242,7 +253,7 @@ AND NOT (s)-[:CONNECTS_TO]->()
 RETURN s
 ----
 
-The image below reveals that these nodes hold information about the author, the title and the game settings:
+The image below shows that these nodes hold information about the author, the title and the game settings:
 
 image::images/nodes_without_relations.png[Nodes without relations]
 
@@ -260,7 +271,7 @@ WITH p WHERE length(p) = apoc.coll.min(lengths)
 RETURN p
 ----
 
-It query yields a single result with a length of 20 (start node, 18 story nodes, end node):
+The query yields a single result with a length of 20 (start node, 18 story nodes, end node):
 
 image::images/path_shortest.png[Shortest path]
 
@@ -274,12 +285,15 @@ WITH p WHERE length(p) = apoc.coll.max(lengths)
 RETURN p
 ----
 
-The reverse query with the `max` length instead of `min` length yields six results with a length of 100 (start node, 98 story nodes and one of the six end nodes):
+The reverse query, using `max` length instead of `min` length, yields six results with a length of 100 (start node, 98 story nodes and one of the six end nodes):
 
 image::images/path_longest.png[Longest paths]
 
-Note that I had to add `shortestPath` to avoid the circles in the graph.
+[NOTE]
+====
+I added `shortestPath` to avoid the circles in the graph.
 The queries are based on a similar query by Joe Depeau.
+====
 
 === Q: Is there a path from the fake start nodes to end nodes?
 
@@ -290,14 +304,14 @@ MATCH path=shortestPath((:fake_start_node)-[:CONNECTS_TO*1..]->(:end_node))
 RETURN path
 ----
 
-I downloaded the link:neo4j_query_table_paths_from_fake_start_nodes.csv[CSV file] for the query and included it in the repository.
+I downloaded the resulting link:neo4j_query_table_paths_from_fake_start_nodes.csv[CSV file] of the query and included it in this repository.
 It reveals that there are 106 different paths from fake start nodes to end nodes.
 
 == Challenges
 
-This section contains some notes on the execution of the project and what difficulties i faced while doing it.
+This section contains some notes on the execution of the project and what difficulties i faced while working on it.
 
-Nonetheless, I'd like to make clear that the project has been incredibly fun 🧑‍💻
+I'd also like to make clear that the project has been incredibly fun 🧑‍💻
 
 === Which Neo4j environment to use?
 
@@ -307,7 +321,7 @@ First, I tried registering two of my email addresses for both link:https://neo4j
 For some reason, I never received a confirmation email. ⛔
 
 Next, I downloaded link:https://neo4j.com/download/[Neo4j Desktop].
-Loading the CSV files into the application posed a problem - apparently my system lacked the correct Java version (or, for starters, any Java version).
+Loading the CSV files into the application posed a problem: apparently my system lacked the correct Java version (or, in the beginning, any Java version).
 I installed the suggestion version (Oracle Java SDK 17), yet the same error message occurred. ⛔
 
 Back to Neo4j Sandbox, I noticed that I could select *Continue with LinkedIn*.
@@ -315,7 +329,7 @@ This worked fine, and the environment I used for the remainder of the project wa
 
 === From proof of concept to Python script and valid CSV files
 
-While the proof of concept was implemented quickly, the actual realization of the project surpassed my expectations in terms of effort.
+While the proof of concept was implemented quickly, the actual realization of the project took a little longer than planned.
 
 Especially a set of special characters that were used inconsistently throughout the source HTML file required several debugging and refining steps before I ended up with a usable set of CSV files that I could upload.
 
@@ -326,7 +340,7 @@ image::images/edges_import.png[Edges import]
 === Circles in the graph
 
 I would have liked to include something substantial about circles in the graph.
-Everything I've tried failed because the procedures were running for a very long time.
+Everything I've tried failed because the queries were running for a very long time.
 I suspect this is due to the relatively large graph size and the fact that there are a lot of circles.
 
 === Limitations of GitHub with respect to Asciidoc
@@ -334,4 +348,5 @@ I suspect this is due to the relatively large graph size and the fact that there
 Some more sophisticated features which Asciidoc usually provides don't work in the GitHub rendering:
 
 . `include` - For a clearer structure I would have liked to split up the content.
+. The two admonitions that I used lack proper styling.
 . Custom IDs and references - I tried to add a custom ID to an image to create an anchor and then add a link reference to the anchor which did not work unfortunately.
