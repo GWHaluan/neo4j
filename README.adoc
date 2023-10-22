@@ -1,4 +1,4 @@
-= A Neo4j for The Terror Aboard The Speedwell
+= A Neo4j graph for The Terror Aboard The Speedwell
 
 :Author:    Richard Sill
 :Email:     <rschroed2009@gmx.de>
