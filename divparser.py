@@ -5,6 +5,8 @@ import re
 import string
 import csv
 
+# disclaimer: don't judge my overflow-driven python development :)
+
 # some globals because it's easier with the scope of class variables and
 # inherited methods.
 global number_of_tiddlers

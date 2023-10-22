@@ -35,11 +35,11 @@ A free and playable version can be found link:https://jgwaltneiv.itch.io/the-ter
 . In the overlay, click *No thanks, just take me to the downloads* above the donation input.
 . For the HTML-based version, *Download* _The Terror Aboard The Speedwell 1.2.zip_ and unzip it.
 
-Luckily, the HTML-based version contains the entire adventure as a set of +div+ elements which are sufficiently readable and more importantly easy to process.
+Luckily, the HTML-based version contains the entire adventure as a set of `div` elements which are sufficiently readable and more importantly easy to process.
 
 === Extracting the data
 
-The +div+ elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
+The `div` elements with the story snippets inside _The Terror Aboard The Speedwell 1.2.html_ look like this:
 
 [source,html]
 ----
@@ -73,10 +73,10 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 Note that occurrences of `\n` have been replaced with a carriage return in the listings above.
 
 .Observations:
-. The +tiddler+-attribute of a +div+ element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
+. The +tiddler+-attribute of a `div` element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
 . Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found earlier throughout the text.
 
-I wrote a link:divparser.py[Python script] to parse the +div+ elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
+I wrote a link:divparser.py[Python script] to parse the `div` elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
 I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
 
 ._nodes.csv_:
@@ -168,7 +168,7 @@ The query yielded an unexpected result:
 image::images/start_nodes.png[Start nodes]
 
 There are four start nodes, three of which are not actually start nodes.
-No +div+ element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_.
+No `div` element connects to the corresponding three elements in _The Terror Aboard The Speedwell 1.2.html_.
 The real start node is selected in the image.
 
 I added the `start_node` label to that node with the following Cypher query:
@@ -245,7 +245,7 @@ The image below reveals that these nodes hold information about the author, the 
 
 image::images/nodes_without_relations.png[Nodes without relations]
 
-Apparently they were encoded as +div+ elements like the actual story nodes.
+Apparently they were encoded as `div` elements like the actual story nodes.
 
 === Q: What's the quickest way to beat the story? What's the longest route?
 
