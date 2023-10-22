@@ -1,4 +1,4 @@
-= A text-based adventure in Neo4j
+= A Neo4j for The Terror Aboard The Speedwell
 
 :Author:    Richard Sill
 :Email:     <rschroed2009@gmx.de>
@@ -12,25 +12,25 @@ I drew inspiration from link:https://neo4j.com/blog/vampire-express-graph-databa
 
 I first discovered _Choose Your Own Adventures_ when I was a teenager.
 At the time I had a physical copy, a booklet that related thematically to a tabletop role-playing game.
-It had me look up pages to proceed with the story and I really liked the unique way of interacting with the text, rather than just consuming the content.
+It had me look up pages to proceed with the story and I really liked the unique way of interacting with the text, rather than just consuming its content.
 
 Graph-based models of _Choose Your Own Adventures_ are well explored.
-For example, some interesting aspects of such graph representations are covered in link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books] by Sarah Laskow.
+For example, link:https://www.atlasobscura.com/articles/cyoa-choose-your-own-adventure-maps[These Maps Reveal the Hidden Structures of 'Choose Your Own Adventure' Books] by Sarah Laskow covers some interesting aspects of such graph representations.
 
 Unfortunately, I no longer had the booklet from 20 years ago (and I think it was in German language) nor any other _Choose Your Own Adventure_ books at the ready.
-Instead, I went online and looked for a suitable digital model.
+Instead, I went online and looked for a suitable digital text.
 
 == The data model
 
 === Getting hold of usable source data
 
 
-I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside _Choose Your Own Advenutre_.
+I always loved link:https://www.imdb.com/title/tt0078748/?ref_=nv_sr_srsg_1_tt_7_nm_0_q_alien[Alien], so that was my go-to search term alongside "Choose Your Own Advenutre".
 
 I found the article link:https://www.polygon.com/2014/9/8/6123049/alien-aliens-avp-terror-aboard-the-speedwell[The best Alien game is a text adventure] by Danielle Riendeau which highly praises the adventure _The Terror Aboard the Speedwell_, written by Javy Gwaltney.
 A free and playable version can be found link:https://jgwaltneiv.itch.io/the-terror-aboard-the-speedwell[here].
 
-.To download the game:
+.To download the version I used for the project:
 . Click *Download*.
 . In the overlay, click *No thanks, just take me to the downloads* above the donation input.
 . For the HTML-based version, *Download* _The Terror Aboard The Speedwell 1.2.zip_ and unzip it.
@@ -55,10 +55,7 @@ Sergeant Ryan Benson turns around to look at you.
 1.[[“Julia,” he says.]]
 2.[[“Zoe,” he says.]]
 </div>
-----
-
-[source,html]
-----
+...
 <div tiddler="“Julia,” he says." tags="" created="201401271139" modifier="twee" twine-position="245,163">
 “Julia, everything okay? You’ve got that look in your eyes.”
 
@@ -70,11 +67,16 @@ Ryan constantly feels some need to ask if you’re all right. Either out of attr
 </div>
 ----
 
-Note that occurrences of `\n` have been replaced with a carriage return in the listings above.
+[NOTE]
+.Test
+====
+Note that I replaced occurrences of `\n` with a carriage return in the listings above to make them more readable.
+====
+
 
 .Observations:
-. The +tiddler+-attribute of a `div` element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
-. Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found earlier throughout the text.
+. The `tiddler` attribute of a `div` element represents the user's choice in the previous step in the story. It also serves as a unique identifier among the elements.
+. Outgoing connections are typically enumerated as a list of links, embedded in double square brackets, but may occasionally also be found throughout the text, without a number.
 
 I wrote a link:divparser.py[Python script] to parse the `div` elements and to create two CSV files, link:nodes.csv[nodes.csv] and link:edges.csv[edges.csv].
 I chose the CSV file format because Neo4j allows the upload of CSV files into its data model.
@@ -90,7 +92,7 @@ incoming,text
 ...
 ----
 
-I treat the *incoming* column as the node's ID. The only other column is *text* to store the actual story snippet with the node.
+I treat the *incoming* column as the node's ID. The only other column *text* stores the story snippet in the node.
 
 ._edges.csv_:
 [source,csv]
@@ -105,7 +107,7 @@ Each edge is represented by the tuple made up of the IDs of the source and targe
 
 === Populating the Neo4j graph
 
-First, I loaded up the two files _nodes.csv_ and _edges.csv_ this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to Neo4j via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
+First, I loaded up the two files _nodes.csv_ and _edges.csv_ to this GitHub repository (link:https://github.com/GWHaluan/neo4j[https://github.com/GWHaluan/neo4j]) and then to Neo4j via the `LOAD CSV` link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[Cypher command], based on the queries explained in link:https://neo4j.com/docs/cypher-manual/current/clauses/load-csv/[LOAD CSV command with Cypher].
 
 .Cypher query for _nodes.csv_:
 [source]
